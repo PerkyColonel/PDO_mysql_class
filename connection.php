@@ -33,7 +33,29 @@ class Connection
     public function add($data)
     {
         $prepare = $this->conn->prepare("INSERT INTO personen (voornaam, achternaam, postcode, wachtwoord) VALUES (:voornaam, :achternaam, :postcode, :wachtwoord)");
-        $prepare->execute(['voornaam' => $data[0], 'achternaam' => $data[1], 'postcode' => $data[2], 'wachtwoord' => $data[3]]);
+        $prepare->execute([
+            'voornaam' => $data[0],
+            'achternaam' => $data[1],
+            'postcode' => $data[2],
+            'wachtwoord' => $data[3]
+        ]);
     }
 
+    public function update($data)
+    {
+        $stmt = $this->conn->prepare("UPDATE personen SET voornaam=:voornaam, achternaam=:achternaam, postcode=:postcode, wachtwoord=:wachtwoord WHERE id=:id");
+        $stmt->execute([
+            'id' => $data['id'],
+            'voornaam' => $data['voornaam'],
+            'achternaam' => $data['achternaam'],
+            'postcode' => $data['postcode'],
+            'wachtwoord' => $data['wachtwoord']
+        ]);
+    }
+
+    public function del($id)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM personen WHERE id=:id");
+        $stmt->execute(['id' => $id]);
+    }
 }
